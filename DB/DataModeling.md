@@ -117,7 +117,9 @@
       속성에 정의할 값들의 형태를 결정하고, 그 값들이 데이터 생성시에 반드시 입력되어야 하는 지에 대한 결정도 같이 정의한다.
      
      
-     
+     참조 : DATABASE.SARANG.NET - 정재익 - "데이터 모델링 강좌"  
+     [참조 링크]  
+     http://database.sarang.net/?inc=read&aid=433&criteria=dbms&subcrit=&id=&limit=20&keyword=&page=3
      
      
      
