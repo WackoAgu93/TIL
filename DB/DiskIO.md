@@ -29,7 +29,7 @@
 
     ## DiskIO 의 분산 (저장 방식)
     
-![databasewithoracle2](../image/databasewithoracle2.jpg)  
+![diskioseperate](../image/diskioseperate.jpg)  
 
 - Segment Extent Striping 구성  
     1. 디스크 분산 : 각 Datafile은 서로 다른 VG에 생성  
