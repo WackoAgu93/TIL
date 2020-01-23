@@ -50,3 +50,8 @@ https://boxtalk.tistory.com/14
 https://okun.tistory.com/entry/Block-Extent-Segment
 * Oracle Database Architecture 이미지 참조  
 https://link.springer.com/chapter/10.1007/978-1-4842-4517-0_10
+
+
+[Round Robin]
+: 시분할 시스템을 위해 설계된 선점형 스케줄링의 하나로 프로세스 사이에 우선순위를 두지 않고, 순서대로 시간단위로 CPU를 할당하는 방식의 CPU 스케줄링 알고리즘
+프로세스들 사이에 우선순위를 두지 않고, 순서대로 시간단위 CPU를 할당하는 방식, 보통 시간 단위는 10ms ~ 100ms 정도이고 시간단위 동안 수행한 프로세스는 준비 큐의 끝으로 밀려나게 된다. 문맥 전환의 오버헤드가 큰반면, 응답시간이 짧아지는 장접이 있어 실시간 시스텡메 유리하고, 할당되는 시간이 클 경우 비선점 FIFO 기법과 아진다.
