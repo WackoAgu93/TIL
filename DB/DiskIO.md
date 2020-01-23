@@ -6,13 +6,13 @@
       * 데이터를 작성하고 변경할시 디스크에 저장되는 것
       
 * 오라클 스토리지의 구조 7단계  
-![OracleStorage](../image/OracleStorage.PNG)
+![OracleStorage](../image/OracleStorage.PNG)  
 
 * Block & Extent & Segment  
-![databasewithoracle1](../image/databasewithoracle1.PNG)
+![databasewithoracle1](../image/databasewithoracle1.PNG)  
 
 * Oracle Database Architecture  
-![databasewithoracle2](../image/databasewithoracle2.jpg)
+![databasewithoracle2](../image/databasewithoracle2.jpg)  
 
        * __ Block __  
        DB Block(Oracle Block)은 OS Block을 한개이상 합쳐서 생성하며 DB_BLOCK_SIZE로 지정 가능하다.
