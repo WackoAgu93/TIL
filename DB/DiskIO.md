@@ -1,9 +1,9 @@
 
-# Disk IO
+# Disk IO (Input / Output)
 
-    __ DiskIO란 __
+   ## DiskIO 란
     
-      * 데이터를 작성하고 변경할시 디스크에 저장되는 것
+   * 데이터를 작성하고 변경할시 디스크에 저장되는 것
       
 * 오라클 스토리지의 구조 7단계  
 ![OracleStorage](../image/OracleStorage.PNG)  
@@ -27,6 +27,20 @@
     TableSpace 내에 특정 구조에 대한 모든 데이터를 갖고 있는 하나 혹은 하나 이상의 EXTENT 집합을 말한다.  
     (Data Segment / Index Segment / Rollback Segment / Temporary Segment)
 
+    ## DiskIO 의 분산 (저장 방식)
+    
+![databasewithoracle2](../image/databasewithoracle2.jpg)  
+
+- Segment Extent Striping 구성  
+    1. 디스크 분산 : 각 Datafile은 서로 다른 VG에 생성  
+    2. Segment Extent Striping : Test Table의 Extent는 각 Datafile에 Round Robin 방식으로 Extent 할당
+    3. Segment Extent String 과 디스크 구성 결합 : Segment Extent Striping과 디스크 구성에 의해 Physical 디스크에 분산되며 Test Table 의 데이터는 각 디스크에 저장됨 이에 따라 디스크를 Access 할 호가률 증가
+        
+- Segment Extent Striping 장점  
+    * 한 번 Access 시 모든 디스크 Access 확률 증대
+    * 해당 Table에 대해서 모든 디스크로 균등하게 데이터를 저장함으로써 디스크 IO 분산 가능
+        
+        
 
 ##참조
 
