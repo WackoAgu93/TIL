@@ -83,7 +83,7 @@
   
   1. 두번재 Spring Container가 구동되며 응답에 맞는 PageController 들이 동작한다. 이 때 첫번째 Sring Container 가 구동되면서 생성된 DAO, VO, ServiceImpl 클래스들과 협업하여 알맞은 작업을 처리하게 된다.
 
-    ## JSP(Java Server Page)
+   ## JSP(Java Server Page)
   
   - Java 코드가 들어가 있는 HTML 코드
   
