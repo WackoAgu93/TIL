@@ -20,5 +20,19 @@ Object 의 인스턴스라는 말은 그 Object 가 [[prototype]] 프로퍼티�
 
 ![toString()1](../image/jstostring1.jpg)
 ---
-![toString()1](../image/jstostring2.jpg)
+![toString()2](../image/jstostring2.jpg)
+
+위의 예제에서 __toString__ 을 호출 했을 때 자바스크립트 엔진은 `newWorker` 가 본인의 스코프에서 toString 을 가지고 있는지 확인한다. 만약 가지고 있으면, 그 스코프 내의 toString 이 호출된다. 만약 가지고 있지 않다면, 자바스크립트 엔진은 newWorker의 [[prototype]] 프로퍼티에 연결된 객체로 들어가 그 스코프에서 toString이 있는지 확인한다. 만약 있다면 해당 스코프 내의 toString 이 실행되고, 가지고 있지 않으면 다시 그 스코프 내에 존재하는 ][[prototype]] 프로퍼티에 연결된 객체로 들어가 위 작업을 반복한다. 이 반복 과정은 toString 을 어느 스코프 내에서 찾을 때 까지 반복하거나 더 이상 [[prototype]] 프로퍼티에 연결된 객체가 없을 때까지, 즉 null 일때까지 반복한다. [[protortpe]] 프로퍼티에 연결된 객체가 null인 경우는 최상위 객체인 Object의 [[prototype]] 을 조사했을 때이며, 이렇게 프로토타입에 연결된 객체를 타고 상위 클래스로 올라가면서 새로운 프로토타입의 스코프에서 찾고자하는 값을 조사하는과정을 프로토타입 체이닝이라고 부른다.
+
+* __[Object Object] 는 잘 다듬어진 Object.prototype.toString 의 알고리즘의 결과물이다.__
+
+![toString()3](../image/jstostring3.jpg)
+
+  먼저 위에서 언급한 모든 데이터 타입에느 Object.prototype.toString 의 인자로 전달될 수 있고 toString 은 클래스 타입을 위의 예제처럼 뱉어낸다. toString을 사용해서 저런식으로 클래스 타입을 얻기 위해선 한 가지 주의할 점으로 Function.prototype.call 이나 function.prototype.apply을 같이 사용해 주어야 한다.  
+(call 과 apply 는 호출한 메소드 내에서 참조할 this가 전달한 인자를 참조하게끔 만들어 주는 역할을 한다.)
+
+
+
+
+
 
