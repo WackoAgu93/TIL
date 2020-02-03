@@ -190,7 +190,7 @@
   하지만 자바스크립트의 비동기적 특성을 잘 활용하기 위해서는 이벤트 루프를 제대로 이해하는 것이 중요하다. 특히 웹 워커나 [Node.js의 클러스터}(https://nodejs.org/api/cluster.html)를 사용하는 멀티 스레드 환경에서는 이벤트 루프에 대한 이해가 없다면 더욱 힘들것이다.
   
   
- * 참조 
+### 참조 
   
   - [자바스크립트와 이벤트루프](https://jakearchibald.com/2015/tasks-microtasks-queues-and-schedules/)
   - [마이크로 태스크](https://jakearchibald.com/2015/tasks-microtasks-queues-and-schedules/)
