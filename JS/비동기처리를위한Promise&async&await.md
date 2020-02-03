@@ -24,4 +24,94 @@
   
  * 이렇게 특정 로직의 실행이 끝날 때까지 기다려주지 않고 나머지 코드를 먼저 실행하는 것을 비동기 처리라고 한다.
  
- * 또 다른 비동기 처리 사례는 `setTimeout()`이다. __setTimeout()는 Web API의 한 종류 __ 로, 코드를 바로 실행하지 않고 지정한 시간만큼 기다렸다가 로직을 실행한다.
+ * 또 다른 비동기 처리 사례는 `setTimeout()`이다. __setTimeout()는 Web API의 한 종류__ 로, 코드를 바로 실행하지 않고 지정한 시간만큼 기다렸다가 로직을 실행한다.
+
+```javascript
+   // #1
+   console.log('Hello');
+   // #2
+   setTimeout(function() {
+      console.log('Bye');
+   },3000);
+   // #3
+   console.log('Hello Again');
+```
+   __Hello(1) > Hello Again(3) > Bye(2) 출력__
+   
+## 콜백 함수로 비동기 처리 방식의 문제점 해결하기
+
+   - ajax 통신코드 콜백 함수로 개선하기
+```javascript
+   function getData(callbackFunc) { // 파라미터를 통해 콜백 함수 받아오기
+      $.get('https://domain.com/products/1', function(response) {
+         callbackFunc(response); // 서버에서 받은 response를 콜백함수 callbackFunc() 함수에 넘겨줌
+      });
+   };
+   
+   getData(function(tableData) {
+      console.log(tableData); // $.get()의 response 값이 tableData에 전달 됨.
+   });
+```
+   __콜백 함수를 통해 ajax 통신이 끝났을때 (특정 로직이 종료 되었을 때) 원하는 동작을 실행 시킬수 있다.__
+   
+## 콜백 지옥 (Callback Hell)
+
+   콜백 지옥은 비동기 처리 로직을 위해 콜백 함수를 연속해서 사용할 쌔 발생하는 문제이다.  
+```javascript
+   $.get('url', function(response) {
+      parseValue(response, function(id) {
+         auth(id, function(result) {
+            display(result, function(text) {
+               console.log(text);
+            });
+         });
+      });
+   });
+```
+   서버에서 받아온 데이터를 통해 화면에 표시하기 까지 인코딩, 사용자 인증 등을 처리해야 하는 경우가 있는데 이를 모두 비동기로 처리해야 하는경우 위의 코드처럼 콜백 안에 콜백을 무는 형식의 코딩이 이루어 지게 되는데 이는 가독성도 떨어지고 로직을 변경하기도 어렵다.
+   
+   일반적으로 콜백지옥을 해결하는 방법으로는 Promise나 Async를 사용하는 방법이 있으나  
+   __코딩 패턴만으로만 콜백 지옥을 해결하려면 아래와 같이 각 콜백 함수를 분리해 주어야 한다.__
+   
+```javascript
+   function parseValueDone(id) {
+      auth(id, authDone);
+   }
+   function authDone(result) {
+      display(result, displayDone);
+   }
+   function displayDone(text) {
+      console.log(text);
+   }
+   $.get('url', function(response) {
+      parseValue(response, parseValueDone);
+   });
+```
+   중첩해서 선언했던 콜백 익명 함수를 각각의 함수로 구분하였는데 풀이해 보자면 먼저 ajax 통신으로 받은 데이터를 parseValue() 메소드로 파싱을 한 후, parseValueDone()에 파싱한 결과값인 id가 전달 되고, auth()메소드가 실행된다. auth() 메소드로 인증을 거치고 나면 콜백 함수 authDone()가 실행 되고 인증 결과 값인 result로 display()를 호추랗면 마지막으로 displayDone() 메소드가 수행되면서 text가 콘솔에 출력되게 된다.
+   
+## Promise 처리
+
+   __"A promise is an object that may produce a single value some time in the future"__
+   
+   Promise는 자바스크립트 비동기 처리에 사용되는 객체이다.
+   프로미스는 주로 서버에서 받아온 데이터를 화면에 표시할 때 사용하며 일반적으로 웹 어플리케이션을 구현할 때 서버에서 데이터를 요청하고 받아오기 위해 사용한다.
+   
+## Promise 코드
+
+```javascript
+   function getData(callback) {
+     // new Promise() 추가
+     return new Promise(function (resolve, reject) {
+       $.get('url 주소/products/1', function (response) {
+         // 데이터를 받으면 resolve() 호출
+         resolve(response);
+       });
+     });
+   }
+
+   // getData()의 실행이 끝나면 호출되는 then()
+   getData().then(function (tableData) {
+     // resolve()의 결과 값이 여기로 전달됨
+     console.log(tableData); // $.get()의 reponse 값이 tableData에 전달됨
+   });
+```
