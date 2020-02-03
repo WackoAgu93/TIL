@@ -1,6 +1,6 @@
 
 
-## 비동기 처리란?
+# 비동기 처리
 
    특정 코드의 연산이 끝날 때까지 코드의 실행을 멈추지 않고 다음 코드를 먼저 실행하는 자바스크립트의 특성을 뜻한다.
    
@@ -89,7 +89,7 @@
 ```
    중첩해서 선언했던 콜백 익명 함수를 각각의 함수로 구분하였는데 풀이해 보자면 먼저 ajax 통신으로 받은 데이터를 parseValue() 메소드로 파싱을 한 후, parseValueDone()에 파싱한 결과값인 id가 전달 되고, auth()메소드가 실행된다. auth() 메소드로 인증을 거치고 나면 콜백 함수 authDone()가 실행 되고 인증 결과 값인 result로 display()를 호추랗면 마지막으로 displayDone() 메소드가 수행되면서 text가 콘솔에 출력되게 된다.
    
-## Promise 처리
+# Promise
 
    __"A promise is an object that may produce a single value some time in the future"__
    
@@ -187,9 +187,30 @@
    
 ![프로미스의 처리 흐름](../image/promiseflow.jpg)
    
+```javascript
+   function getData() {
+     return new Promise(function (resolve, reject) {
+       $.get('url 주소/products/1', function (response) {
+         if (response) {
+           resolve(response);
+         }
+         reject(new Error("Request is failed"));
+       });
+     });
+   }
+
+   // Fulfilled 또는 Rejected의 결과 값 출력
+   getData().then(function (data) {
+     console.log(data); // response 값 출력
+   }).catch(function (err) {
+     console.error(err); // Error 출력
+   });
+```
+__위 코드는 서버에서 제대로 응답을 받아오면 `resolve()` 메소드를 호출하고, 응답이 없으면 `reject()` 메소드를 호출한다. 호출된 메소드에 따라 `then()` 이나 `catch()`로 분기하여 데이터 또는 오류를 출력 한다.__
    
-   
-   
+## 여러 개의 프로미스 연결하기 (Promise Chainng)
+
+   프로미스의 또 다른 특징은 여러개의 프로미스를 연결하여 사용할 수 있다는 점이다. 
    
    
    
