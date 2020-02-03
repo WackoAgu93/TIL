@@ -115,3 +115,25 @@
      console.log(tableData); // $.get()의 reponse 값이 tableData에 전달됨
    });
 ```
+   콜백 함수로 처리하던 구조에서 `new Promise()`, `resolve()`, `then()`와 같은 Promise API를 사용한 구조로 바뀌었다.  
+   
+## Promise의 3가지 상태
+
+   Promise를 사용하는 데 있어 가장 기본적인 개념은 바로 프로미스의 상태(state)이다. 여기서 말하는 상태란 프로미스의 처리 과정으로 `new Promise()`로 프로미스를 생성하고 종료될 때까지 3가지의 상태를 가진다.
+   
+   - Pending(대기) : 비동기 처리 로직이 아직 완료되지 않은 상태  
+   - Fulfilled(이행) : 비동기 처리가 완료되어 프로미스가 결과 값을 반환해준 상태
+   - Rejected(실패) : 비동기 처리가 실패하거나 오류가 발생한 상태
+   
+### Pending(대기)
+   
+   먼저 아래와 같이 `new Promise()` 메소드를 호출하면 Pending(대기) 상태가 된다.
+```javascript
+   new Promise();
+```
+   이렇게 `new Promise()`메소드를 호출할 때 ㅋ로백 함수의 인자로 `resolve`, `reject`에 접근할 수 있다.
+```javascript
+   new Promise(function (resolve, reject) {
+      //...
+    });
+```
