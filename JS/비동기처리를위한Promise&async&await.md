@@ -131,9 +131,69 @@
 ```javascript
    new Promise();
 ```
-   이렇게 `new Promise()`메소드를 호출할 때 ㅋ로백 함수의 인자로 `resolve`, `reject`에 접근할 수 있다.
+   이렇게 `new Promise()`메소드를 호출할 때 콜백 함수의 인자로 `resolve`, `reject`에 접근할 수 있다.
 ```javascript
    new Promise(function (resolve, reject) {
       //...
     });
 ```
+
+### Fulfilled(이행)
+   __(==> Promise의 '이행'상태를 다르게 표현하면 '완료' 이다.)__
+   
+   여기서 콜백 함수의 인자 `resolve`를 아래와 같이 실행하면 Fulfilled(이행) 상태가 된다.
+```javascript
+   new Promise(function (resolve, reject){
+      resolve();
+   });
+```
+   그리고 이행 상태가 되면 아래와 같이 `then()`을 이용하여 처리 결과 값을 받을 수 있다.
+```javascript
+   function getData() {
+      return new Promise(function (resolve, reject) {
+         var data = 100;
+         resolve(data);
+      });
+   }
+   
+   // resolve()의 결과 값 data를 resolved Data로 받음
+   getData().then(function (resolvedData) {
+      console.log(resolvedData); // 100
+   });
+```
+   
+### Rejected(실패)
+
+   `new Promise()`로 프로미스 객체를 생성하면 콜백 함수 인자로 `resolve`와 `reject`를 사용할 수 있다. 여기서 `reject`인자로 `reject()`메소드를 시행하면 Rejected(실패) 상태가 된다.
+   
+```javascript
+   new Promise(function (resolve, reject) {
+      reject();
+   });
+```
+   그리고, 실패 상태가 되면 실패한 이유 (실패 처리의 결과 값)를 catch()로 받을 수 있다.
+```javascript
+   function getData() {
+     return new Promise(function (resolve, reject) {
+       reject(new Error("Request is failed"));
+     });
+   }
+
+   // reject()의 결과 값 Error를 err에 받음
+   getData().then().catch(function (err) {
+     console.log(err); // Error: Request is failed
+   });
+```
+   
+![프로미스의 처리 흐름](../image/promiseflow.jpg)
+   
+   
+   
+   
+   
+   
+   
+* 참조
+
+   CAPTAINPANGYO - 비동기처리
+   https://joshua1988.github.io/web-development/javascript/javascript-asynchronous-operation/
