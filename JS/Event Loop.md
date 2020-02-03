@@ -163,7 +163,7 @@
   
   한가지 짚고 넘어갈 사실은 '0'이라는 숫자가 실제로 '즉시'를 의미하지 않는다는 점이다. 브라우저는 내부적으로 타이머의 최소단위(Tick)를 정하여 관리하기 때문에 실제로는 그 최소단위 만큼 지난 후에 태스크 큐에 추가되게 된다. 그리고 이 최소단위는 브라우저별로 조금씩 다른데, 예를 들어 크롬 브라우저의 경우 최소단위 4ms를 사용하기 때문에 크롬에서 `setTimeout(fn, 0)`은 `setTimeout(fn, 4)`과 동일한 의미를 갖게 될 것이다.
   
-  이런 문제를 해결하기 위해 `setImmediate`라는 API가 제안되었지만, 표준의 반열에 오르지는 못하고 IE10이상에만 포함되어 있다. 실제로 이 메소드는 `setTimeout`과 같은 최소단위 지연이 없이 바로 태스크 큐에 해당 콜백을 추가한다. 비슷한 효과를위해 `postMessage`나 `Messagechanel`을 사용하기도 하는데, 관련된 내용은 `setImmediate`의 [폴리필을 구현한 라이브러리 페이지](https://github.com/YuzuJS/setImmediate)에 잘 정리되어 있다. 
+  이런 문제를 해결하기 위해 `setImmediate`라는 API가 제안되었지만, 표준의 반열에 오르지는 못하고 IE10이상에만 포함되어 있다. 실제로 이 메소드는 `setTimeout`과 같은 최소단위 지연이 없이 바로 태스크 큐에 해당 콜백을 추가한다. 비슷한 효과를위해 `postMessage`나 `Messagechanel`을 사용하기도 하는데, 관련된 내용은 [`setImmediate`의 폴리필을 구현한 라이브러리 페이지](https://github.com/YuzuJS/setImmediate)에 잘 정리되어 있다. 
   
   
   
