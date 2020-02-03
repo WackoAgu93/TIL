@@ -165,18 +165,34 @@
   
   이런 문제를 해결하기 위해 `setImmediate`라는 API가 제안되었지만, 표준의 반열에 오르지는 못하고 IE10이상에만 포함되어 있다. 실제로 이 메소드는 `setTimeout`과 같은 최소단위 지연이 없이 바로 태스크 큐에 해당 콜백을 추가한다. 비슷한 효과를위해 `postMessage`나 `Messagechanel`을 사용하기도 하는데, 관련된 내용은 [`setImmediate`의 폴리필을 구현한 라이브러리 페이지](https://github.com/YuzuJS/setImmediate)에 잘 정리되어 있다. 
   
+## Promise 와 EventLoop
+
+  이런 이벤트 루프의 개념은 실제로 [HTML 스펙](https://html.spec.whatwg.org/multipage/webappapis.html#event-loops)에 정의되어져 있다. 문서에서 이벤트 루프, 태스크 큐의 개념에 대해 잘 정의되어 있는데 문서 중간에 마이크로 태스크(microtask)라는 생소한 용어가 보인다. 다음의 코드를 살펴 보자.
+  
+```javascript
+  setTimeout(function(){  // (A)
+    console.log('A');
+  }, 0);
+  Promise.resolve().then(function(){ // (B)
+    console.log('B');
+  }).then(function() { // (C)
+    console.log('C');
+  };
+```
+  위 코드의 콘솔에 찍히는 순서를 생각해 보면 Promise 또한 비동기로 실행되니 A > B > C 아니면 프라미스는 `setTimeout`처럼 최소단위 지연이 없으니 B > C > A ? 체인형태로 연속해서 호출된 `then()`함수의 동작방식은 어떠한지 생각을 해봐야 한다.  
+  정답은 B > C > A 로, 이유는 Promise가 마이크로 태스크를 사용하기 때문이다.
+  
+  __마이크로 태스크(microtask)__ 는 쉽게 말해서 일반 태스크보다 더 높은 우선순위를 갖는 태스크라고 할 수 있다. 즉, 태스크 큐에 대기중인 태스크가 있더라도 마이크로 태스크가 먼저 실행된다. 위의 예제에서 `setTimeout()`함수는 콜백 A를 태스크 큐에 추가하고, Promise의 `then()` 메소드는 콜백 B를 태스크 큐가 아닌 __별도의 마이크로 태스크 큐__ 에 추가한다. 위의 코드의 실행이 끝나면 태스크 이벤트 루프는 (일반)태스크 큐 대신 마이크로 태스크 큐가 비었는지 먼저 확인하고, 큐에 있는 콜백 B를 실행한다. 콜백 B가 실행되고 나면 두번째 `then()` 메소드가 콜백 C를 마이크로 태스크 큐에 추가한다. 이벤트 루프는 다시 마이크로 태스크를 확인하고, 큐에 있는 콜백 C를 실행한다. 이후에 마으크로 태스크 큐가 비었음을 확인한 다음 (일반)태스크 큐에서 콜백 A를 꺼내와 실행한다.
+  
+  마이크로 태스크와 일반 태스크에 따라 실행되는 타이밍이 달라지기 대문에 둘을 제대로 이해하고 구분해서 사용하는 것은 중요하다.
+  
+  * 이벤트 루프는 실제로 자바스크립트 언어의 명세보다는 구동 환경과 더 관련된 내용이기 때문에 다른 프로세스들(렌더링, IO 등) 과 밀접하게 연고나되어 있어 잘 정리된 자료를 찾기가 쉽지만은 않다. 또한 Node.js의 LIBUV는 HTML 스펙을 완벽히 따르지는 않기 때문에 브라우저 환경의 이벤트 루프와 상세 규현이 조금씩 다르다. (심지어 브라우저 별로 구현이 조금씩 다름.)  
+  하지만 자바스크립트의 비동기적 특성을 잘 활용하기 위해서는 이벤트 루프를 제대로 이해하는 것이 중요하다. 특히 웹 워커나 [Node.js의 클러스터}(https://nodejs.org/api/cluster.html)를 사용하는 멀티 스레드 환경에서는 이벤트 루프에 대한 이해가 없다면 더욱 힘들것이다.
   
   
+  참조 
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  - [자바스크립트와 이벤트루프](https://jakearchibald.com/2015/tasks-microtasks-queues-and-schedules/)
+  - [마이크로 태스크](https://jakearchibald.com/2015/tasks-microtasks-queues-and-schedules/)
   
   
