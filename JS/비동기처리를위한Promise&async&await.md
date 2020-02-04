@@ -212,8 +212,167 @@ __위 코드는 서버에서 제대로 응답을 받아오면 `resolve()` 메소
 
    프로미스의 또 다른 특징은 여러개의 프로미스를 연결하여 사용할 수 있다는 점이다. 
    
+```javascript
+   function getData() {
+     return new Promise({
+       // ...
+     });
+   }
+
+   // then() 으로 여러 개의 프로미스를 연결한 형식
+   getData()
+     .then(function (data) {
+       // ...
+     })
+     .then(function () {
+       // ...
+     })
+     .then(function () {
+       // ...
+     });
+```
+
+__setTimeout() API Promise Chaining 예제__
+```javascript
+   new Promise(function(resolve, reject){
+     setTimeout(function() {
+       resolve(1);
+     }, 2000);
+   })
+   .then(function(result) {
+     console.log(result); // 1
+     return result + 10;
+   })
+   .then(function(result) {
+     console.log(result); // 11
+     return result + 20;
+   })
+   .then(function(result) {
+     console.log(result); // 31
+   });
+```
+   위 코드는 프로미스 객체를 하나 생성하고 `setTimeout()`을 이용해 2초 후에 `resolve()`를 호출하는 예제이다.  
+   `resolve()`가 호출되면 프로미스가 대기 상태(Pending)에서 이행 상태(Fullfilled)로 넘어가기 때문에 첫 번재 `.then()`의 로직으로 넘어간다. 첫 번째 `then()`에서는 이행된 결과 값 1을 받아서 10을 더한 후 그다음 `.then()`으로 넘겨주고 두 번째 `.then()`에서도 마찬가지로 바로 이전 프로미스의 결과 값 11을 받아서 20을 더하고 다음 `.then()`으로 넘겨준다. 마지막 `.then()`에서 최종 결과 값 31을 출력하게 된다.
    
+## 실무상의 Promise Chaining 예제
+
+```javascript
+   getData(userInfo)
+      .then(parsevalue)
+      .then(auth)
+      .then(display);
+```
+   위 코드는 페이지에서 입력된 사용자 정보를 받아와 파싱, 인증 등의 작업을 거치는 코드를 나타낸다. 여기서 `userInfo`는 사용자 정보가 담긴 객체를 의미하고, `parseValue`, `auth`, `display`는 각각 프로미스를 반환하는 함수라고 가정한다.
    
+```javascript
+   var userInfo = {
+     id: 'test@abc.com',
+     pw: '****'
+   };
+
+   function parseValue() {
+     return new Promise({
+       // ...
+     });
+   }
+   function auth() {
+     return new Promise({
+       // ...
+     });
+   }
+   function display() {
+     return new Promise({
+       // ...
+     });
+   }
+```
+   __이와 같은 방식으로 여러 개의 프로미스를 `.then()`으로 연결하여 처리가 가능하다.__
+   
+## Promise의 에러 처리 방법
+
+   에러 처리 방법에는 2가지 방법이 있다.
+   
+   1. then()의 두 번재 인자로 에러를 처리하는 방법
+   
+```javascript
+   getData().then(
+      handleSuccess,
+      handleError
+   );
+```
+   
+   1. catch()를 이용하는 방법
+   
+```javascript
+   getData().then().catch();
+```
+
+   - 위 두가지 방법 모두 프로미스의 `reject()` 메소드가 호출되어 실패 상태가 된 경우에 실행한다. 즉 프로미스의 로직이 정상적으로 돌아가지 않는 경우 호출된다.
+   
+```javascript
+   function getData() {
+      return new Promise(function (resolve, reject) {
+         reject('failed');
+      });
+   }
+   
+   // 1. then()으로 에러를 처리하는 코드
+   getData().then(function () {
+      //...
+   }, function (err) {
+      console.log(err);
+   });
+   
+   // 2. catch()로 에러를 처리하는 코드
+   getData().then().catch(function (err) {
+      console.log(err);
+   });
+```
+
+   - Promise 에러 처리는 가급적 __catch()__ 로
+   
+   개개인의 코딩 스타일에 따라서 `then()`의 두 번째 인자로 처리할 수도 있고 `catch()`로 처리할 수도 있겠지만 가급적으로 `catch()`로 에러를 처리하는 게 더 효율적이다.
+   
+```javascript
+   // then()의 두 번째 인자로는 감지하지 못하는 오류
+   function getData(){
+      return new Promise(function (resolve, reject) {
+         resolve('hi');
+      });
+   }
+   
+   getData().then(function (result) {
+      console.log(result);
+      throw new Error("Error in then()"); // Uncaught (in promise) Error : Error in then()
+   }, function (err) {
+      console.log('then error : ',err);
+   });
+```
+   `getData()` 함수의 프로미스에서 `resolve()` 메소드를 호출하여 정상적으로 로직을 처리했지만, __`then()`의 첫 번째 콜백 함수 내부에서 오류가 나는 경우 오류를 제대로 잡아내지 못한다.__ 따라서 코드를 실행하면 아래와 같은 오류가 나게 된다.
+![PromiseUncaughtError](../image/promisecallbackerror.jpg)  
+   __에러를 잡지 못했습니다.(Uncaught Error) 로그__
+   
+   하지만 똑같은 오류를 `catch()`로 처리하면 다른 결과가 나온다.
+   
+```javascript
+   // catch()로 오류를 감지하는 코드
+   function getData() {
+      return new Promise(function (resolve, reject) {
+         resolve('hi');
+      });
+   }
+   
+   getData().then(function (result) {
+      console.log(result); // hi
+      throw new Error("Error in then()");
+   }).catch(function (err) {
+      console.log('then error : ', err); // then error : Error: Error in then()
+   });
+```
+![PromiseError](../image/promisecallbackerror2.jpg)
+
+   -  따라서, 더 많은 예외 처리 상황을 위해 프로미스의 끝에 가급적 catch()를 붙이는게 좋다.
+
 * 참조
 
    CAPTAINPANGYO - 비동기처리
