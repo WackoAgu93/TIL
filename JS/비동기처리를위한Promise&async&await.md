@@ -513,7 +513,7 @@ __setTimeout() API Promise Chaining 예제__
    async function logTodotitle() {
       try {
          var user = await fetchUser();
-         if (user.id ===1) {
+         if (user.id === 1) {
             var todo = await fetchTodo();
             console.log(todo.title);   // delectus aut autem
          }
