@@ -448,6 +448,83 @@ __setTimeout() API Promise Chaining 예제__
 
    `await`를 사용하지 않았다면 데이터를 받아온 시점에 콘솔을 출력할 수 있게 콜백 함수나 `.then()`등을 사용해야 하지만 `async` `await`문법 덕분에 비동기에 대한 사고를 하지 않아도 된다.
    
+```javascript
+   // HTTP 통신 동작을 모방한 코드
+   function fetchItems() {
+     return new Promise(function(resolve, reject) {
+       setTimeout(function() {
+         var items = [1,2,3];
+         resolve(items)
+       }, 3000);
+     });
+   }
+
+   // jQuery ajax 코드
+   function fetchItems() {
+     return new Promise(function(resolve, reject) {
+       $.ajax('domain.com/items', function(response) {
+         resolve(response);
+       });
+     });
+   }
+```
+
+## async & await 실용 예제
+
+   async & await 문법이 가장 빛을 발하는 순간은 여러 개의 비동기 처리 코드를 다룰 때이다. 아래와 같이 각각 사용자와 할 일 목록을 받아오는 HTTP 통신 코드가 있다고 가정한다.
+   
+```javascript
+   function fetchUser() {
+      var url = 'https://jsonplaceholder.typicode.com/users/1'
+      return fetch(url).then(function(response) {
+         return response.json();
+      });
+   }
+   
+   function fetchTodo() {
+      var url = 'https://jsonplaceholder.typicode.com/todos/1';
+      return fetch(url).then(function(response) {
+         return response.json();
+      });
+   }
+```
+   1. `fetchUser()`를 이용하여 사용자 정보 호출
+   1. 받아온 사용자 아이디가 `1`이면 할 일 정보 호출
+   1. 받아온 할 일 정보의 제목을 콘솔에 출력
+   
+```javascript
+   async function logtodoTitle() {
+      var user = await fetchUser();
+      if (user.id === 1) {
+         var todo = await fetch fetchTodo();
+         console.log(todo.title);   // delectus aut autem
+      }
+   }
+```
+   `logTodoTitle()`를 실행하면 콘솔에 delectus aut autem가 출력될 것이다. 위 비동기 처리 코드를 만약 콜백이나 프로미스로 했다면 훨씬 더 코드가 길어졌을 것이고 인덴팅 뿐만 아니라 가독성도 좋지 않을 것이다. 이처럼 async await 문법을 이용하면 기존의 비동기 처리 코드 방식으로 사고하지 않아도 된다.
+   
+   ※ 위 함수에서 사용한 `fetch()` API는 크롬과 같은 최신 브라우저 에서만 작동한다.
+   
+## async & await 예외 처리
+   
+   async & await 에서 예외를 처리하는 방법은 바로 __`try catch`__ 이다. 프로미스에서 에러 처리를 위해 `.catch()`를 사용했던 것처럼 async에서는 `catch {}`를 사용 하면 된다.
+   
+```javascript
+   async function logTodotitle() {
+      try {
+         var user = await fetchUser();
+         if (user.id ===1) {
+            var todo = await fetchTodo();
+            console.log(todo.title);   // delectus aut autem
+         }
+      } catch (error) {
+         console.log(error);
+      }
+   }
+```
+
+   위의 코드를 실행하다가 발생한 네트워크 통신 오류 뿐만 아니라 간단한 타입 오류 등의 일반적인 오류까지도 `catch`로 잡아낼 수 있다. 발견된 에러는 `error` 객체에 담기기 때문에 에러의 유형에 맞게 에러 코드를 처리해 주면 된다.
+
 * 참조
 
    CAPTAINPANGYO - 비동기처리
