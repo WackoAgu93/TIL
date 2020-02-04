@@ -371,7 +371,14 @@ __setTimeout() API Promise Chaining 예제__
 ```
 ![PromiseError](../image/promisecallbackerror2.jpg)
 
-   -  따라서, 더 많은 예외 처리 상황을 위해 프로미스의 끝에 가급적 catch()를 붙이는게 좋다.
+   -  따라서, 더 많은 예외 처리 상황을 위해 프로미스의 끝에 가급적 `catch()`를 붙이는게 좋다.
+   
+# async & await
+
+   __기존의 비동기 처리방식인 콜백 함수와 Promise의 단점을 보완하고, 개발자가 읽기 좋은 코드를 작성할수 있도록 도와준다.__
+   
+   
+
 
 * 참조
 
