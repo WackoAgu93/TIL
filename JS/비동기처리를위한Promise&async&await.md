@@ -381,6 +381,8 @@ __setTimeout() API Promise Chaining 예제__
 
    - `fetchUser()` 코드가 서버에서 데이터를 받아오는 HTTP 통신 코드라고 가정하고 예제를 작성해 본다.
    
+   __비동기 처리가 적용되지 않은 코드__
+---
 ```javascript
    function logName() {
       var user = fetchUser('domain.com/users/1');
@@ -389,7 +391,8 @@ __setTimeout() API Promise Chaining 예제__
       }
    }
 ```
-   __비동기 처리가 적용되지 않은 코드__
+
+   __콜백을 통한 비동기 처리 코드__
 ---
 ```javascript
    function logName() {
@@ -401,7 +404,8 @@ __setTimeout() API Promise Chaining 예제__
       });
    }
 ```
-   __콜백을 통한 비동기 처리 코드__
+
+   __async & await 통한 비동기 처리 코드__
 ---
 ```javascript
    // async & await 적용 후
