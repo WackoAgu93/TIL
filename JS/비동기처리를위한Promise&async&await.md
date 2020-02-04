@@ -377,7 +377,7 @@ __setTimeout() API Promise Chaining 예제__
 
    __기존의 비동기 처리방식인 콜백 함수와 Promise의 단점을 보완하고, 개발자가 읽기 좋은 코드를 작성할수 있도록 도와준다.__
    
-## async & await 예제
+## 동기 VS 비동기
 
    - `fetchUser()` 코드가 서버에서 데이터를 받아오는 HTTP 통신 코드라고 가정하고 예제를 작성해 본다.
    
@@ -426,7 +426,28 @@ __setTimeout() API Promise Chaining 예제__
 ```
    함수 앞에 `async`라는 예약어를 붙인 후 함수의 내부 로직 중 HTTP 통신을 하는 비동기 처리 코드 앞에 `await`를 붙인다. 이때 주의할 점은 비동기 처리 메소드가 꼭 프로미스 객체를 반환해야 `await`가 의도한 대로 동작한다.
 
+## async & await 예제
 
+```javascript
+   function fetchItems() {
+     return new Promise(function(resolve, reject) {
+       var items = [1,2,3];
+       resolve(items)
+     });
+   }
+
+   async function logItems() {
+     var resultItems = await fetchItems();
+     console.log(resultItems); // [1,2,3]
+   }
+```
+   `fetchItems()` 함수는 프로미스 객체를 반환하는 함수로 __프로미스는 "자바스크립트 비동기 처리를 위한 객체"이다.__  
+   `fetchItems()`함수를 실행하면 프로미스가 이행(Resolved)되며 결과 값은 `items`배열이 된다.
+   
+   `logitems()`함수를 실행하면 `fetItems()`함수의 결과값인 `items` 배열이 `resultItems` 변수에 담긴다. 따라서 콘솔에는 [1,2,3]이 찍히게 된다.
+
+   `await`를 사용하지 않았다면 데이터를 받아온 시점에 콘솔을 출력할 수 있게 콜백 함수나 `.then()`등을 사용해야 하지만 `async` `await`문법 덕분에 비동기에 대한 사고를 하지 않아도 된다.
+   
 * 참조
 
    CAPTAINPANGYO - 비동기처리
