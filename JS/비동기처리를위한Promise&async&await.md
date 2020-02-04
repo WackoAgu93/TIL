@@ -377,7 +377,50 @@ __setTimeout() API Promise Chaining 예제__
 
    __기존의 비동기 처리방식인 콜백 함수와 Promise의 단점을 보완하고, 개발자가 읽기 좋은 코드를 작성할수 있도록 도와준다.__
    
+## async & await 예제
+
+   - `fetchUser()` 코드가 서버에서 데이터를 받아오는 HTTP 통신 코드라고 가정하고 예제를 작성해 본다.
    
+```javascript
+   function logName() {
+      var user = fetchUser('domain.com/users/1');
+      if (user.id === 1) {
+         console.log(user.name);
+      }
+   }
+```
+   __비동기 처리가 적용되지 않은 코드__
+---
+```javascript
+   function logName() {
+   // 아래의 user 변수는 위의 코드와 비교하기 위해 일부러 남겨 놓았다.
+      var user = fetchUser('domain.com/users/1', function(user) {
+         if(user.id ===1) {
+            console.log(user.name);
+         }
+      });
+   }
+```
+   __콜백을 통한 비동기 처리 코드__
+---
+```javascript
+   // async & await 적용 후
+   async function logName() {
+      var user = await fetchUser('domain.com/users/1');
+      if (user.id === 1) {
+         console.log(user.name);
+      }
+   }
+```
+
+## async & await 기본 문법
+   
+```javascript
+   async function 함수명 () {
+      await 비동기_처리_메소드_명();
+   }
+```
+   함수 앞에 `async`라는 예약어를 붙인 후 함수의 내부 로직 중 HTTP 통신을 하는 비동기 처리 코드 앞에 `await`를 붙인다. 이때 주의할 점은 비동기 처리 메소드가 꼭 프로미스 객체를 반환해야 `await`가 의도한 대로 동작한다.
 
 
 * 참조
