@@ -4,7 +4,7 @@
   BufferedReader / BufferedWriter은 이름처럼 버퍼를 이용해서 읽고 쓰는 함수이다.
   버퍼를 이용하는 이 함수를 통해 입출력을 실행하면 효율이 비교할수 없을만큼 좋아 진다.
   
-  ![Buffer](./image/bufferuse.PNG)  
+  ![Buffer](../image/bufferuse.PNG)  
   
   하드디스크는 매우 속도가 느린 장치로 문자의 정보를 목적지로 바로 이동시키는 것보다 중간에 메모리 버퍼를 둬서 데이터를 한데 묶어서 이동시키는 것이 보다 효율적이고 바르다.
   
