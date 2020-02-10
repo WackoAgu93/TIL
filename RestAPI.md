@@ -1,11 +1,11 @@
 
 # REST API - Representational State Transfer API
 
-    ### REST API 의 탄생
+   ### REST API 의 탄생
   
   2000년 로이 필딩 (Roy Fielding)의 논문에서 소개 되었으며 웹(HTTP) 설계의 우수성에 비해 제대로 사용되어지지 못하는 모습에 웹의 장점을최대한 활용할 수 있는 아키텍처로써 발표하게 되었다.
   
-    ### REST API 의 구성
+   ### REST API 의 구성
   
   - 자원 (RESOUCE) - URI
   - 행위 (Verb) - HTTP METHOD
@@ -45,13 +45,14 @@
       ```
       위와 같은 방식은 REST 를 제대로 적용하지 않은 URI 이다. URI는 자원을 표현하는데 중점을 두어야 한다. delete와 같은 행위에 대한 표현이 들어가서는 안된다.
       
-      1. 자원에 대한 행위는 `HTTP Method( GET, POST, PUT, DELETE 등)`으로 표현
+      1. __자원에 대한 행위는 `HTTP Method( GET, POST, PUT, DELETE 등)`으로 표현__
       위의 URI를 HTTP Method를 통해 수정
       ```java
         DELETE /members/1
       ```
       __HTTP METHOD의 알맞은 역할__
         __`POST, GET, PUT, DELETE`__ 4가지의 Method를 가지고 CRUD를 할 수 있다.
+        해당 식을 통해 URI는 자원을 표현하는 데에 집중하고 행위에 대한 정의는 HTTTP METHOD를 통해 하는 것이 REST API를 설계하는 중심 규칙이다.
         
        | METHOD | 역할 |
        | :------------ | :---------------------------- |
@@ -59,3 +60,14 @@
        | GET | GET를 통해 해당 리소스를 조회, 리소스를 조회하고 해당 도큐먼트에 대한 자세한 정보를 가져온다. |
        | PUT | PUT를 통해 해당 리소스를 수정한다. |
        | DELETE | DELETE를 통해 리소스를 삭제한다. |
+
+      1. __URI 설계시 주의할 점__
+      
+       1. 슬래시 구분자 ( / )는 계층 관계를 나타내는 데 사용
+       ```
+        http://restapi.example.com/houses/apartments
+        http://restapi.example.com/animals/mammals/whales
+       ```
+       
+       1. URI 마지막 문자로 슬래시 ( / )를 포함하지 않는다. 
+        URI에 포함되는 모든 글자는 리소스의 유일한 식별자로 사용되어야 하며 URI가 다르다는 것은 리소스가 다르다는 것이고, 역으로 리소스가 다르면 URI도 달라져야 한다. REST API는 분명한URI를 만들어 통신을 해야 하기 때문에 혼동을 주지 않도록 URI 경로의 마지막에는 슬래시( / )를 사용하지 않는다.
