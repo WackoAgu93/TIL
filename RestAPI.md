@@ -45,7 +45,7 @@
       ```
       위와 같은 방식은 REST 를 제대로 적용하지 않은 URI 이다. URI는 자원을 표현하는데 중점을 두어야 한다. delete와 같은 행위에 대한 표현이 들어가서는 안된다.
       
-      1. __자원에 대한 행위는 `HTTP Method( GET, POST, PUT, DELETE 등)`으로 표현__
+      2. __자원에 대한 행위는 `HTTP Method( GET, POST, PUT, DELETE 등)`으로 표현__
       위의 URI를 HTTP Method를 통해 수정
       ```java
         DELETE /members/1
@@ -70,7 +70,7 @@
         http://restapi.example.com/animals/mammals/whales
        ```
        
-      1. URI 마지막 문자로 슬래시 ( / )를 포함하지 않는다. 
+      2. URI 마지막 문자로 슬래시 ( / )를 포함하지 않는다. 
         URI에 포함되는 모든 글자는 리소스의 유일한 식별자로 사용되어야 하며 URI가 다르다는 것은 리소스가 다르다는 것이고, 역으로 리소스가 다르면 URI도 달라져야 한다. REST API는 분명한URI를 만들어 통신을 해야 하기 때문에 혼동을 주지 않도록 URI 경로의 마지막에는 슬래시( / )를 사용하지 않는다.  
         
         ```
@@ -78,20 +78,20 @@
          http://restapi.example.com/houses/apartments    (O)
         ```
         
-      1. 하이픈( - )은 URI 가독성을 높이는데 사용
+      3. 하이픈( - )은 URI 가독성을 높이는데 사용
          URI를 쉽게 읽고 해석하기 위해, 불가피하게 긴 URI경로를 사용하게 된다면 하이픈을 사용해 가독성을 높일 수 있다.
        
-      1. 밑줄( _ )은 URI에 사용하지 않는다.
+      4. 밑줄( _ )은 URI에 사용하지 않는다.
          글꼴에 따라 다르긴 하지만 밑줄은 보기 어렵거나 밑줄 때문에 문자가 가려지기도 하므로 가독성을 위해 밑줄 대신 하이픈( _ )을 사용하는 것이 좋다.
          
-      1. URI 경로에는 소문자가 적합하다.
+      5. URI 경로에는 소문자가 적합하다.
          대소문자에 따라 다른 리소스로 인식하게 되기 때문에 URI 경로에 대문자 사용은 피하도록 해야 한다.  
          RFC 3986(URI 문법 형식)은 URI 스키마와 호스트를 제외하고는 대소문자를 구별하도록 규정 되어져 있다.  
          ```
             RFC 3986 is the URI (Unified Resource Identifier) Syntx document
          ```
          
-      1. 파일 확장자는 URI에 포함 시키지 않는다.  
+      6. 파일 확장자는 URI에 포함 시키지 않는다.  
          ```
             http://restapi.example.com/members/soccer/345/photo.jpg (X)
          ```
