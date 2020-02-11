@@ -15,7 +15,7 @@
   
   1. Uniform (유니폼 인터페이스)
   Uniform Interface는 URI로 지정한 리소스에 대한 조작을 __통일되고 한정적인 인터페이스로 수행__ 하는 아키텍처 스타일을 말한다.
-  
+    
   1. Stateless (무상태성)
   REST는 무상태성 성격을 갖는다. 즉, __작업을 위한 상태정보를 따로 저장하고 관리하지 않는다. 세션 정보나 쿠키 정보를 별도로 저장하고 관리하지 않기 때문에 API 서버는 들어오는 요청만을 단순히 처리__ 하면 된다. 때문에 서비스의 자유도가 높아지고 서버에서 불필요한 정보를 관리하지 않음으로써 구현이 단순해 진다.
   
@@ -37,7 +37,7 @@
   - __URI는 정보의 자원을 표현해야 한다.__
   - __자원에 대한 행위는 HTTP Method(`GET`, `POST`, `PUT`, `DELETE`)로 표현한다.__
   
-    1. REST API 중심 규칙
+  1. REST API 중심 규칙
     
       1. URI는 정보의 자원을 표현해야 한다.(__리소스 명은 동사보다는 명사를 사용__)
       ```java
@@ -45,12 +45,12 @@
       ```
       위와 같은 방식은 REST 를 제대로 적용하지 않은 URI 이다. URI는 자원을 표현하는데 중점을 두어야 한다. delete와 같은 행위에 대한 표현이 들어가서는 안된다.
       
-      1. __자원에 대한 행위는 `HTTP Method( GET, POST, PUT, DELETE 등)`으로 표현__
+      2. __자원에 대한 행위는 `HTTP Method( GET, POST, PUT, DELETE 등)`으로 표현__
       위의 URI를 HTTP Method를 통해 수정
       ```java
         DELETE /members/1
       ```
-      __HTTP METHOD의 알맞은 역할__
+     ## __HTTP METHOD의 알맞은 역할__
         __`POST, GET, PUT, DELETE`__ 4가지의 Method를 가지고 CRUD를 할 수 있다.
         해당 식을 통해 URI는 자원을 표현하는 데에 집중하고 행위에 대한 정의는 HTTTP METHOD를 통해 하는 것이 REST API를 설계하는 중심 규칙이다.
         
@@ -61,13 +61,41 @@
        | PUT | PUT를 통해 해당 리소스를 수정한다. |
        | DELETE | DELETE를 통해 리소스를 삭제한다. |
 
-      1. __URI 설계시 주의할 점__
+  1. __URI 설계시 주의할 점__
       
-       1. 슬래시 구분자 ( / )는 계층 관계를 나타내는 데 사용
+      1. 슬래시 구분자 ( / )는 계층 관계를 나타내는 데 사용  
        ```
         http://restapi.example.com/houses/apartments
         http://restapi.example.com/animals/mammals/whales
        ```
        
-       1. URI 마지막 문자로 슬래시 ( / )를 포함하지 않는다. 
-        URI에 포함되는 모든 글자는 리소스의 유일한 식별자로 사용되어야 하며 URI가 다르다는 것은 리소스가 다르다는 것이고, 역으로 리소스가 다르면 URI도 달라져야 한다. REST API는 분명한URI를 만들어 통신을 해야 하기 때문에 혼동을 주지 않도록 URI 경로의 마지막에는 슬래시( / )를 사용하지 않는다.
+      1. URI 마지막 문자로 슬래시 ( / )를 포함하지 않는다. 
+        URI에 포함되는 모든 글자는 리소스의 유일한 식별자로 사용되어야 하며 URI가 다르다는 것은 리소스가 다르다는 것이고, 역으로 리소스가 다르면 URI도 달라져야 한다. REST API는 분명한URI를 만들어 통신을 해야 하기 때문에 혼동을 주지 않도록 URI 경로의 마지막에는 슬래시( / )를 사용하지 않는다.  
+        ```
+         http://restapi.example.com/houses/apartments/   (X)
+         http://restapi.example.com/houses/apartments    (O)
+        ```
+      1. 하이픈( - )은 URI 가독성을 높이는데 사용
+         URI를 쉽게 읽고 해석하기 위해, 불가피하게 긴 URI경로를 사용하게 된다면 하이픈을 사용해 가독성을 높일 수 있다.
+       
+      1. 밑줄( _ )은 URI에 사용하지 않는다.
+         글꼴에 따라 다르긴 하지만 밑줄은 보기 어렵거나 밑줄 때문에 문자가 가려지기도 하므로 가독성을 위해 밑줄 대신 하이픈( _ )을 사용하는 것이 좋다.
+         
+      1. URI 경로에는 소문자가 적합하다.
+         대소문자에 따라 다른 리소스로 인식하게 되기 때문에 URI 경로에 대문자 사용은 피하도록 해야 한다.  
+         RFC 3986(URI 문법 형식)은 URI 스키마와 호스트를 제외하고는 대소문자를 구별하도록 규정 되어져 있다.  
+         ```
+            RFC 3986 is the URI (Unified Resource Identifier) Syntx document
+         ```
+         
+      1. 파일 확장자는 URI에 포함 시키지 않는다.  
+         ```
+            http://restapi.example.com/members/soccer/345/photo.jpg (X)
+         ```
+         REST API에서는 메시지 바디 내용의 포맷을 나타내기 위한 파일 확장자를 URI 안에 포함시키지 않는다. Accept header를 권장한다.  
+         ```
+            GET /members/soccer/345/photo HTTP/1.1 Host: restapi.example.com Accept: image/jpg
+         ```
+         
+  1. 리소스간의
+     
