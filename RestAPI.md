@@ -45,7 +45,7 @@
       ```
       위와 같은 방식은 REST 를 제대로 적용하지 않은 URI 이다. URI는 자원을 표현하는데 중점을 두어야 한다. delete와 같은 행위에 대한 표현이 들어가서는 안된다.
       
-      2. __자원에 대한 행위는 `HTTP Method( GET, POST, PUT, DELETE 등)`으로 표현__
+      1. __자원에 대한 행위는 `HTTP Method( GET, POST, PUT, DELETE 등)`으로 표현__
       위의 URI를 HTTP Method를 통해 수정
       ```java
         DELETE /members/1
@@ -64,6 +64,7 @@
   1. __URI 설계시 주의할 점__
       
       1. 슬래시 구분자 ( / )는 계층 관계를 나타내는 데 사용  
+      
        ```
         http://restapi.example.com/houses/apartments
         http://restapi.example.com/animals/mammals/whales
@@ -71,10 +72,12 @@
        
       1. URI 마지막 문자로 슬래시 ( / )를 포함하지 않는다. 
         URI에 포함되는 모든 글자는 리소스의 유일한 식별자로 사용되어야 하며 URI가 다르다는 것은 리소스가 다르다는 것이고, 역으로 리소스가 다르면 URI도 달라져야 한다. REST API는 분명한URI를 만들어 통신을 해야 하기 때문에 혼동을 주지 않도록 URI 경로의 마지막에는 슬래시( / )를 사용하지 않는다.  
+        
         ```
          http://restapi.example.com/houses/apartments/   (X)
          http://restapi.example.com/houses/apartments    (O)
         ```
+        
       1. 하이픈( - )은 URI 가독성을 높이는데 사용
          URI를 쉽게 읽고 해석하기 위해, 불가피하게 긴 URI경로를 사용하게 된다면 하이픈을 사용해 가독성을 높일 수 있다.
        
