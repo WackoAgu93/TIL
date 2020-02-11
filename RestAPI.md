@@ -100,5 +100,13 @@
             GET /members/soccer/345/photo HTTP/1.1 Host: restapi.example.com Accept: image/jpg
          ```
          
-  1. 리소스간의
+  1. 리소스 간의 관계를 표현하는 방법
+    
+     REST 리소스 간에는 연관 관계가 있을 수 있고, 이런 경우 다음과 같은 표현방법으로 사용합니다.
+     ```
+      /리스소명/리소스ID/관계가 있는 다른 리소스 명
+      ex) GET : /users/{userid}devices (일반적으로 소유
+   추가 작성 필요
+    
+     
      
