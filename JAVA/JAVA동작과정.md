@@ -27,17 +27,17 @@
   3. Class Loader를 통해 class파일들을 JVM으로 로딩한다.  
   4. 로딩된 class파일들은 Execution engine을 통해 해석된다.  
   5. 해석된 바이트 코드는 Runtime Data Areas에 배치되어 실질적인 수행이 이루어지게 된다.  
-  이러한 실행 과정 속에서 JVM은 필요에 따라 Thread Synchronization과 Garbage Collection 같은 관리작업을 수행한다.
+  이러한 실행 과정 속에서 JVM은 필요에 따라 Thread Synchronization과 Garbage Collection 같은 관리작업을 수행한다.  
   
 ![JVM activce](../image/JVMact.PNG)
   
   ### JVM의 구성요소
   
-  1. 자바 인터프리터 (JAVA Interpreter)
-  2. 클래스 로더
-  3. JIT 컴파일러 (Just In Time Compiler)
-  4. 가비지 컬렉터
-  5. Execution Engine(실행 엔진)
+  1. 자바 인터프리터 (JAVA Interpreter)  
+  2. 클래스 로더  
+  3. JIT 컴파일러 (Just In Time Compiler)  
+  4. 가비지 컬렉터  
+  5. Execution Engine(실행 엔진)  
   
   #### 인터프리터와 클래스 로더
   
@@ -69,27 +69,27 @@
 
 ![Runtime Data Area](../image/runtimedataarea.PNG)
 
-1. PC Register
+1. PC Register  
   Thread 가 시작될 때 생성되며 생성될 때마다 생성되는 공간으로 쓰레드 마다 하나씩 존재하나다. Thread가 어떤 부분을 어떤 명령으로 실행해야 할 지에 대한 기록을 하는 부분으로 수행 중인 JVM 명령의 주소를 갖는다.
 
-2. JVM 스택 영역
+2. JVM 스택 영역  
   프로그램 실행과정에서 임시로 할당되었다가 메소드를 빠져나가면 바로 소멸되는 특성의 데이터를 저장하기 위한 영역이다. 각종 형태의 변수나 임시 데이터, 스레드나 메소드의 정보를 저장한다. 메소드 호출 시마다 각각의 스택 프레임(그 메소드 만을 위한 공간)이 생성된다. 메소드 수행이 끝나면 프레임 별로 삭제를 한다. 메소드 안에서 사용되는 값들(local variable)을 저장한다. 또 호출된 메소드의 매개변수, 지역변수, 리턴 값 및 연산 시 일어나는 값들을 임시로 저장한다.
 
-3. Native method stack
+3. Native method stack  
   자바 프로그램이 컴파일 되어 생성되는 바이트 코드가 아닌 실제 실행할 수 있는 기계어로 작성된 프로그램을 실행시키는 영역으로 JAVA가 아닌 다른 언어로 작성된 작성된 코드를 위한 공간이다. JAVA Native Interface를 통해 바이트 코드로 전환하여 저장한게 된다. 일반 프로그램처럼 커널이 스택을 잡아 독자적으로 프로그램을 실행시키는 영역이다. 이 부분을 통해 C code를 실행시켜 Kernel에 접근할 수 있다.
   
-4. Method Area (= Class area = Static area)
+4. Method Area (= Class area = Static area)  
   클래스 정보를 처음 메모리 공간에 올릴 때 초기화되는 대상을 저장하기 위한 메모리공간. 올라가게 되는 메소드의 바이트 코드는 프로그램의 흐름을 구성하는 바이트 코드이다. 자바 프로그램은 main 메소드의 호출에서부터 계속된 메소드의 호출로 흐름을 이어가기 때문이다. 대부분 인스턴스의 생성도 메소드 내에서 명령하고 호출한다. 사실상 컴파일 된 바이트 코드의 대부분이 메소드 바이트 코드이기 때문에 거의 모든 바이트 코드가 올라간다고 봐도 상관없다. 이 공간에는 __Runtime Constant pool__ 이라는 별도의 관리 영역도 함께 존재한다. 이는 상수 자료형을 저장하여 참조하고 중복을 막는 역할을 수행한다.
   
   - 올라가는 정보의 종류
 
-  1. Field Information
+  1. Field Information  
     멤버변수의 이름, 데이터 타입, 접근 제어자에 대한 정보
   
-  2. Method Information
+  2. Method Information  
     메소드의 이름, 리턴타입, 매개변수, 접근제어자에 대한 정보
   
-  3. Type Information
+  3. Type Information  
     class인지 Interface인지의 여부 저장 / Type의 속성, 전체 이름, super class의 전체 이름(Interface 이거나 object인 경우 제외)
 
   __Method Area는 클래스 데이터를 위한 공간이라면 Heap영역이 객체를 위한 공간이다.  
@@ -108,7 +108,7 @@ __New/Young 영역__
   - Eden : 객체들이 최초로 생성되는 공간
   - Survivor 0 / 1 : Eden에서 참조되는 객체들이 저장되는 공간
 
-__Old 영역__
+__Old 영역__  
   New area에서 일정 시간 참조되고 있는, 살아남은 객체들이 저장되는 공간 Eden영역에 객체가 가득차게 되면 첫번재 GC(minor GC)가 발생한다. Eden영역에 있는 값들을 Survivor 1 영역에 복사하고 이 영역을 제외한 나머지 영역의 객체를 삭제한다.  
   인스턴스는 소멸 방법과 소멸 시점이 지역 변수와는 다르기에 힙(Heap)이라는 별도의 영역에 할당된다. 자바 가상 머신은 매우 합리적으로 인스턴스를 소멸 시킨다. 더이상 인스턴스의 존재 이유가 없을 때 소멸 시킨다.
 
