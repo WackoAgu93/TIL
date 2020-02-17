@@ -3,7 +3,7 @@
 
 ![JAVA Memory](../image/javamemorystackheap.jpg)
 
-##Stack
+## Stack
 
 - __Heap 영역에 생성된 Object 타입의 데이터의 참조값이 할당__ 된다.  
 - 원시타입의 데이터가 값과 함께 할당된다.  
@@ -16,5 +16,15 @@
   
   Stack 메모리는 Thread 하나당 하나씩 할당된다. 즉, 쓰레드 하나가 새롭게 생성되는 순간 해당 쓰레드를 위한 Stack도 함께 생성되며, 각 쓰레드에서 다른 쓰레드의 Stack 영역에는 접근할 수 없다.
   
+## Heap
+
+  - Heap 영역에는 주로 긴 생명주기를 가지는 데이터들이 저장 된다. (대부분의 오브젝트는 크기가 크고, 서로 다른 코드블럭에서 공유되는 경우가 많다.)  
+  - 애플리케이션의 모든 메모리 중 Stack 에 있는 데이터를 제외한 부분이라고 보면 된다.  
+  - __모든 Object 타입(Integer, String, ArrayList, ...)은 Heap 영역에 생성__ 된다.  
+  - __몇개의 스레드가 존재하든 상관없이 단 하나의 Heap 영역만 존재__ 한다.  
+  - Heap 영역에 있는 오브젝트들을 가리키는 레퍼런스 변수가 Stack에 올라가게 된다.  
   
+  
+  [좀더 공부 필요]
+  - 참조  
   https://yaboong.github.io/java/2018/05/26/java-memory-management/
