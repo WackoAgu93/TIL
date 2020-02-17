@@ -16,6 +16,39 @@
   
   Stack 메모리는 Thread 하나당 하나씩 할당된다. 즉, 쓰레드 하나가 새롭게 생성되는 순간 해당 쓰레드를 위한 Stack도 함께 생성되며, 각 쓰레드에서 다른 쓰레드의 Stack 영역에는 접근할 수 없다.
   
+__Stack 실행 코드__
+
+```java
+  public class Main{
+    public static void main(String[] args) {
+      int argument = 4;
+      argument = someOperation(argument);
+    }
+    
+    private static int someOperation(int param){
+      int tmp = param * 3;
+      int result = tmp / 2;
+      return result;
+    }
+  }
+```
+  argument 에 4 라는 값을 최초로 할당했고, 이 argument 변수를 함수에 넘겨주고 결과값을 또 다시 argument에 할당하는 코드이다.  
+  `int arguemnt = 4;` 에 의해 argument라는 변수 명으로 공간이 할당되고, argument 변수의 타입은 원시타입이므로 이 공간에는 실제 4라는 값이 할당된다.
+![MemoryStack](../image/javamemory_1.png)
+
+  `someOperation()` 함수가 호출될때 인자로argument 변수를 넘겨주며 scope가 `someOperation()` 함수로 이동한다. scope가 바뀌면서 기존의 argument 라는 값은 scope에서 벗어나므로 사용할 수 없다. 이때 인자로 넘겨받은 값은 파라미터인 param 에 복사되어 전달하는데, param 또한 원시타입이므로 stack에 할당된 공간이 값에 할당된다.
+![MemoryStack](../image/javamemory_2.png)
+
+```java
+  int tmp = param * 3;
+  int result = tmp / 2;
+```
+![MemoryStack](../image/javamemory_3.png)
+
+  다음으로, 닫는괄호 `}` 가 실행되어 `someOperation()` 함수 호출이 종료되면 호출함수 scope 에서 사용되었던 모든 지역변수들은 stack에서 pop 된다. 함수가 종료되어 지역변수들이 모두 pop 되고, 함수를 호출했던 시점으로 돌아가면 스택의 상태는 아래와 같이 변한다.
+![MemoryStack](../image/javamemory_4.png)
+  argument 변수는 4로 초기화 되었지만, 함수의 실행결과인 6이 기존 argument 변수에 재할당 된다. 물론 함수호출에서 사용되었던 지역변수들이 모두 pop되기 전에 재할당 작업이 일어날 것이다.
+
 ## Heap
 
   - Heap 영역에는 주로 긴 생명주기를 가지는 데이터들이 저장 된다. (대부분의 오브젝트는 크기가 크고, 서로 다른 코드블럭에서 공유되는 경우가 많다.)  
